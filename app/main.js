@@ -51,8 +51,9 @@ define(["jquery", "knockout"], function($, ko) {
 		}
 
 		self.load = function(){
-			var db = JSON.parse(localStorage.db);
-			if (db) {
+			if (localStorage.db) {
+
+				var db = JSON.parse(localStorage.db);
 				for (var i in db){
 					var list = db[i];
 					self.lists.push(new ListViewModel(list.listTitle, self.save, list.tasks))
