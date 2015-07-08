@@ -12,10 +12,16 @@ define(["jquery", "knockout"], function($, ko) {
 		self.newTask = ko.observable();
 		self.tasks = ko.observableArray(tasks || []);
 		self.editingTitle = ko.observable(false);
+		self.addingNewTask = ko.observable(false);
 
-		self.addTask = function(){
+		self.addNewTask = function(){
+			self.addingNewTask(true);
+		}
+
+		self.saveNewTask = function(){
 			self.tasks.push(self.newTask());
 			self.newTask("");
+			self.addingNewTask(false);
 			onSave();
 		}
 
