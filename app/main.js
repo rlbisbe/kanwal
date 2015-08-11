@@ -3,53 +3,23 @@
 
 
 
-define(["jquery", "knockout"], function($, ko) {
-
-	function ListViewModel(title, onSave, tasks){
-		var self = this;
-
-		self.listTitle = ko.observable(title || "test");
-		self.newTask = ko.observable();
-		self.tasks = ko.observableArray(tasks || []);
-		self.editingTitle = ko.observable(false);
-		self.addingNewTask = ko.observable(false);
-
-		self.addNewTask = function(){
-			self.addingNewTask(true);
-		}
-
-		self.saveNewTask = function(){
-			self.tasks.push(self.newTask());
-			self.newTask("");
-			self.addingNewTask(false);
-			onSave();
-		}
-
-		self.removeTask = function(data){
-			var index = self.tasks.indexOf(data)
-			self.tasks.splice(index,1);
-			onSave();
-		}
-
-		self.editTitle = function(data){
-			self.editingTitle(true);
-		}
-
-		self.saveTitle = function(data){
-			self.editingTitle(false);
-			onSave();
-		}
-	}
+define(["jquery", "knockout", "taskViewModel", "listViewModel"], function($, ko, TaskViewModel, ListViewModel) {
 
 	function ViewModel() {
 		var self = this;
 		self.lists = ko.observableArray([]);
 		self.newList = ko.observable();
+		self.editingTask = ko.observable();
 
 		self.addList = function(){
-			self.lists.push(new ListViewModel(self.newList(), self.save));
+			self.lists.push(new ListViewModel(self.newList(), self.save, self.editTask));
 			self.newList("");
 			self.save();
+		}
+
+		self.editTask = function(data){
+			self.editingTask(data);
+			$('#myModal').modal();
 		}
 
 		self.save = function(){
@@ -62,7 +32,7 @@ define(["jquery", "knockout"], function($, ko) {
 				var db = JSON.parse(localStorage.db);
 				for (var i in db){
 					var list = db[i];
-					self.lists.push(new ListViewModel(list.listTitle, self.save, list.tasks))
+					self.lists.push(new ListViewModel(list.listTitle, self.save, self.editTask, list.tasks))
 				}
 			}
 		}

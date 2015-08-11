@@ -20,7 +20,8 @@ require.config({
   map: {
     "*": {
       "knockout": "../bower_components/knockout.js/knockout-2.3.0.debug",
-      "ko": "../bower_components/knockout.js/knockout-2.3.0.debug"
+      "ko": "../bower_components/knockout.js/knockout-2.3.0.debug",
+      "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap"
     }
   }
 });

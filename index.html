@@ -30,37 +30,69 @@
   <br/>
   	<!-- ko foreach: lists -->
   	<div class="col-md-3">
-
-	  <div class="panel panel-primary"> 
-	  	<div class="panel-heading">
-	  		<h3 class="panel-title" data-bind="visible: !editingTitle(), click: editTitle">
-	  			<span data-bind="text: listTitle"></span>
-	  		</h3>
+  	  <h3 data-bind="text: listTitle, visible: !editingTitle(), click: editTitle"></h3>
 	  		<form class="form-inline" data-bind="submit: saveTitle, visible: editingTitle()">
 		    	<input type="text" class="form-control" data-bind="value: listTitle" />
 		    	<button type="submit" class="btn btn-default">Save</button>
 		  	</form>
-	  	</div>
       	<!-- ko foreach:tasks -->
+      	<div class="panel panel-default" data-bind="click: editTask">
       	<div class="panel-body">
-      	<span data-bind="text: $data"></span>
+      	<span data-bind="text: title"></span>
       	<a class="btn btn-link pull-right" href="#" role="button" data-bind="click: $parent.removeTask"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
       	</div>
+      </div>
       	<!-- /ko -->
-      	<div class="panel-footer">
-      		<h3 class="panel-title" data-bind="visible: !addingNewTask(), click: addNewTask">
+      		<a class="btn btn-default" data-bind="visible: !addingNewTask(), click: addNewTask">
 	  			New task
-	  		</h3>
+	  		</a>
 	  		<form class="form-inline" data-bind="submit: saveNewTask, visible: addingNewTask()">
-		      	<input type="text" class="form-control" data-bind="value: newTask" placeholder="New Task" />
-		      	<button type="submit" class="btn btn-default pull-right">Add</button>
+		      	<input type="text" class="form-control" data-bind="value: newTask().title" placeholder="New Task" />
+		      	<button type="submit" class="btn btn-default">Add</button>
 			</form>
       	</div>
-      	</div>
-
-	</div>
   	<!-- /ko -->
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" data-bind="with: editingTask">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel" data-bind="text: title"></h4>
+	      </div>
+	      <div class="modal-body">
+	      	<p data-bind="text: description, visible: !editingDescription(), click: editDescription"></p>
+	  		 <form class="form" data-bind="submit: updateDescription, visible: editingDescription()">
+  				<div class="form-group">
+			        <textarea type="text" class="form-control" data-bind="value: description"></textarea>
+	        	</div>
+    		      	<button type="submit" class="btn btn-primary">Save</button>
+			</form>
+		    <hr/>
+		    <h2>Activity</h2>
+		    <form class="form" data-bind="submit: addNewComment">
+  				<div class="form-group">
+			        <input type="text" class="form-control" data-bind="value: newComment" placeholder="New comment" />
+	        	</div>
+			    <button type="submit" class="btn btn-primary">Add</button>
+			</form>
+			<hr/>
+	    	<!-- ko foreach: comments -->
+	      	<div class="panel panel-default">
+		      	<div class="panel-body">
+		      	<p data-bind="text: title"></p>
+		      	<small data-bind="text: timestamp"></small>
+		      	<a class="btn btn-link pull-right" href="#" role="button"></a>
+		      	</div>
+		      </div>
+  			<!-- /ko -->
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
   	<div class="col-md-3">
+  		<h3>&nbsp;</h3>
 		<form class="form-inline" data-bind="submit: addList">
 	      <input type="text" class="form-control" data-bind="value: newList" placeholder="New List" />
 	      <button type="submit" class="btn btn-default">Add</button>
